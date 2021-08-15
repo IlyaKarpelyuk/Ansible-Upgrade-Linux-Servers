@@ -1,0 +1,18 @@
+---
+- name: Upgrade Linux Servers
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: Update Repositories & Upgrade Servers
+    apt: upgrade=full update_cache=yes
+    register: upgrade
+
+  - name: Clean after upgrade
+    apt: autoclean=yes autoremove=yes
+    when: upgrade.changed
+#    register: clean
+
+#  - name: Reboot Servers after upgrade
+#    reboot:
+#    when: clean.changed
